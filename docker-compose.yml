@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  api_gateway:
+    container_name: api_gateway
+    command: npm run start api-gateway
+    build:
+      context: .
+      target: development
+      dockerfile: ./apps/api-gateway/Dockerfile
+    restart: always
+    volumes:
+      - ./:/app
+    ports:
+      - "3002:3000"
+    depends_on:
+      - auth_service
+      - users_service
+      - nats_transporter
+    networks:
+      - transporter
+
+  auth_service:
+    container_name: auth_service
+    command: npm run start auth
+    build:
+      context: .
+      target: development
+      dockerfile: ./apps/auth/Dockerfile
+    restart: always
+    volumes:
+      - ./:/app
+    depends_on:
+      - nats_transporter
+    networks:
+      - transporter
+
+  users_service:
+    container_name: users_service
+    command: npm run start users
+    build:
+      context: .
+      target: development
+      dockerfile: ./apps/users/Dockerfile
+    restart: always
+    volumes:
+      - ./:/app
+    depends_on:
+      - nats_transporter
+    networks:
+      - transporter
+
+  nats_transporter:
+    container_name: nats_transporter
+    image: 'bitnami/nats:latest'
+    ports:
+      - "8222:8222"
+      - "4222:4222"
+    networks:
+      - transporter
+
+networks:
+  transporter:
+    driver: bridge
