@@ -5,7 +5,7 @@ import { Logger } from '@nestjs/common';
 
 const logger = new Logger();
 
-async function bootstrap() {
+(async () => {
   const app = await NestFactory.createMicroservice(UsersModule, {
     transport: Transport.NATS,
     options: {
@@ -13,6 +13,6 @@ async function bootstrap() {
       queue: 'users_service',
     },
   });
+
   await app.listen().then(() => logger.log('Users microservice is running...'));
-}
-bootstrap();
+})();

@@ -7,19 +7,19 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
   imports: [
     ClientsModule.register([
       {
-        name: 'AUTH_SERVICE',
-        transport: Transport.NATS,
-        options: {
-          servers: ['nats://nats_transporter:4222'],
-          queue: 'auth_service',
-        },
-      },
-      {
         name: 'USERS_SERVICE',
         transport: Transport.NATS,
         options: {
           servers: ['nats://nats_transporter:4222'],
           queue: 'users_service',
+        },
+      },
+      {
+        name: 'AUTH_SERVICE',
+        transport: Transport.NATS,
+        options: {
+          servers: ['nats://nats_transporter:4222'],
+          queue: 'auth_service',
         },
       },
     ]),

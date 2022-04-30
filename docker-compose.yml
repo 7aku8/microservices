@@ -3,7 +3,6 @@ version: '3.8'
 services:
   api_gateway:
     container_name: api_gateway
-    command: npm run start api-gateway
     build:
       context: .
       target: development
@@ -22,7 +21,6 @@ services:
 
   auth_service:
     container_name: auth_service
-    command: npm run start auth
     build:
       context: .
       target: development
@@ -37,7 +35,6 @@ services:
 
   users_service:
     container_name: users_service
-    command: npm run start users
     build:
       context: .
       target: development
@@ -55,7 +52,6 @@ services:
     image: 'bitnami/nats:latest'
     ports:
       - "8222:8222"
-      - "4222:4222"
     networks:
       - transporter
 

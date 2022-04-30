@@ -5,7 +5,8 @@ import { map } from 'rxjs';
 @Injectable()
 export class ApiGatewayService {
   constructor(
-    @Inject('USERS_SERVICE') private readonly usersServiceClient: ClientProxy,
+    @Inject('USERS_SERVICE')
+    private readonly usersServiceClient: ClientProxy,
   ) {}
 
   pingUsersService() {
