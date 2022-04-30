@@ -47,6 +47,7 @@ services:
     networks:
       - transporter
 
+#== MESSAGE BROKER
   nats_transporter:
     container_name: nats_transporter
     image: 'bitnami/nats:latest'
@@ -55,6 +56,42 @@ services:
     networks:
       - transporter
 
+#== DATABASE
+  postgres:
+    container_name: postgres_database
+    image: 'postgres:14-alpine'
+    networks:
+      - postgres
+    restart: "unless-stopped"
+    environment:
+      TZ: 'GMT'
+      PGTZ: 'GMT'
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+      USERS_DATABASE: users_database
+      AUTH_DATABASE: auth_database
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d/
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: secret
+      PGADMIN_LISTEN_PORT: 80
+    ports:
+      - "8800:80"
+    volumes:
+      - /data/pgadmin:/root/.pgadmin
+    links:
+      - postgres:postgres
+    networks:
+      - postgres
+
 networks:
   transporter:
+    driver: bridge
+  postgres:
     driver: bridge
