@@ -11,4 +11,8 @@ export class UsersController {
   ping(_: any) {
     return of('asdfasdfasldfkj asljfhasldkj').pipe(delay(1000));
   }
+
+  helloWorld() {
+    return 'Hello world';
+  }
 }
